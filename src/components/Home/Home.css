@@ -1,0 +1,16 @@
+img {
+  width: 100%;
+}
+
+.books-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: #f7f7f0;
+  padding-top: 20px;
+}
+
+.carousel-books {
+  background: #f7f7f0;
+  padding-top: 20px;
+}

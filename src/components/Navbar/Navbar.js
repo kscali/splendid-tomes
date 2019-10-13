@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { Link, withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,6 +21,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import { getBooks } from '../../actions/bookActions';
 import { useStyles } from './Navbar.css.js';
 import { Home, LocalLibrary, MenuBook, Favorite } from '@material-ui/icons';
 
@@ -28,13 +31,16 @@ const icons = [
   <MenuBook/>,
   <Favorite />]
 
-export default function Navbar() {
+const Navbar = (props) => {
+  
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [state, setState] = useState({ left: false });
+  const [input, setInput] = useState("");
+  const dispatch = useDispatch();
 
   const toggleDrawer = (side, open) => event => {
     if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -54,7 +60,7 @@ export default function Navbar() {
       <List>
         {['Home', 'My Books', 'Recommendations', 'Favorites'].map((text, i) => (
           <ListItem button key={text}>
-            <ListItemIcon>{ icons[i] }</ListItemIcon>
+            <ListItemIcon className={ classes.icons }>{ icons[i] }</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -62,7 +68,7 @@ export default function Navbar() {
       <Divider />
       <List>
           <ListItem button>
-            <ListItemIcon><AccountCircle /></ListItemIcon>
+            <ListItemIcon className={ classes.icons }><AccountCircle /></ListItemIcon>
             <ListItemText primary='Profile' />
           </ListItem>
       </List>
@@ -86,6 +92,22 @@ export default function Navbar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  }
+
+  const searchForBook = query => {
+    dispatch(getBooks(query));
+  };
+
+  const onEnter = (e) => {
+    if (e.key === 'Enter' && e.target.value !== "") {
+      searchForBook(input);
+      setInput("");
+      props.history.push('/results');
+    };
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -98,11 +120,12 @@ export default function Navbar() {
       onClose={handleMenuClose}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
     </Menu>
   );
 
   const mobileMenuId = 'primary-search-account-menu-mobile';
+  
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
@@ -157,18 +180,23 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            <span className={ classes.splendid }>
-              splendid
-            </span>
-            <span className={classes.tomes} >
-              tomes
-            </span>
+            <Link to='/'>
+              <span className={ classes.splendid }>
+                splendid
+              </span>
+              <span className={classes.tomes} >
+                tomes
+              </span>
+            </Link>
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
+              value={input}
+              onKeyDown={onEnter}
+              onChange={handleChange}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
@@ -225,3 +253,5 @@ export default function Navbar() {
     </div>
   );
 }
+
+export default withRouter(Navbar);

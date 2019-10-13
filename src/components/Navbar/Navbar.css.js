@@ -82,4 +82,7 @@ export const useStyles = makeStyles(theme => ({
   fullList: {
     width: 'auto',
   },
+  icons: {
+    minWidth: '40px'
+  }
 }));
