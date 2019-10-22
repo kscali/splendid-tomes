@@ -6,6 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import BookList from '../Books/BookList';
+import Parser from 'html-react-parser';
 
 export const Author = () => {
 
@@ -59,18 +60,25 @@ export const Author = () => {
       <Card className={classes.card}>
         <h1>{author.name._text.toUpperCase()}</h1>
           <div className={ classes.authorInfo }>
-            <h4 className={ classes.bookTitle }>
-            Hometown: { author.hometown._text }
-            </h4>
+            { author.hometown._text ? (
+              <h4 className={ classes.bookTitle }>
+                Hometown: { author.hometown._text }
+              </h4>
+              ) : " "
+            }
           </div>
         <CardContent className="book-details">
           <div className="book-cover">
             <img src={author.large_image_url._cdata} alt="book-cover" />
           </div>
         </CardContent>
-        <Typography className={classes.summary} >{ author.about._cdata }</Typography>
+        <Typography className={classes.summary} >
+          { Parser(author.about._cdata) }
+        </Typography>
       </Card>
-      <h3 className={ classes.authorInfo }>More From This Author</h3>
+      <h3 className={ classes.authorInfo }>
+        More From This Author
+      </h3>
     <BookList books={ authorBooks } />
   </div>
   )

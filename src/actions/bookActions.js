@@ -1,12 +1,13 @@
 import axios from 'axios';
 const convert = require('xml-js');
 
-const apiKey = `${process.env.API_KEY}`;
+const apiKey = 'KOA8yG6YeSJsUT9BoEYVg';
 const config = {headers: {"X-Requested-With" : "XMLHttpRequest"}};
 
 export const SEARCH_BOOKS = "SEARCH_BOOKS";
 export const SEARCH_AUTHOR = "SEARCH_AUTHOR";
 export const SAMPLE_BOOKS = "SAMPLE_BOOKS";
+export const GET_MAIN_BOOK = "GET_MAIN_BOOK";
 
 export const searchBooks = books => ({
   type: SEARCH_BOOKS,
@@ -21,6 +22,11 @@ export const searchAuthor = author => ({
 export const sampleBooks = books => ({
   type: SAMPLE_BOOKS,
   payload: books
+})
+
+export const getMainBook = book => ({
+  type: GET_MAIN_BOOK,
+  payload: book
 })
 
 
@@ -46,5 +52,11 @@ export const getAuthor = id => dispatch => {
   const url = `https://cors-anywhere.herokuapp.com/https://www.goodreads.com/author/show/${id}?format=xml&key=${apiKey}`;
  
   axios.get(url).then(res => dispatch(searchAuthor(JSON.parse(convert.xml2json(res.data, {compact: true, spaces: 2})))));
+}
+
+export const getBook = id => dispatch => {
+  const url = `https://cors-anywhere.herokuapp.com/https://www.goodreads.com/book/show/${id}.xml?key=${apiKey}`;
+
+  axios.get(url).then(res => dispatch(getMainBook(JSON.parse(convert.xml2json(res.data, {compact: true, spaces: 2})))));
 }
 

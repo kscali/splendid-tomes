@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import SearchResults from './components/Books/SearchResults';
 import Book from './components/Books/Book';
 import { Author } from './components/Author/Author';
+import Footer from './components/Footer/Footer';
 import './App.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route exact path="/:id" component={ Book } />
         <Route exact path="/" component={ Home } />
       </Switch>
+      <Footer />
     </div>
   );
 }

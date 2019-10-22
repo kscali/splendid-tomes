@@ -1,8 +1,10 @@
-import { SEARCH_BOOKS, SEARCH_AUTHOR, SAMPLE_BOOKS } from "../actions/bookActions";
+import { SEARCH_BOOKS, SEARCH_AUTHOR, SAMPLE_BOOKS, GET_MAIN_BOOK } from "../actions/bookActions";
 
 export const booksReducer = (state = {}, action) => {
 
   switch(action.type) {
+    case GET_MAIN_BOOK: 
+      return Object.assign({}, state, { mainBook: action.payload.GoodreadsResponse.book });
     case SEARCH_BOOKS: 
       return Object.assign({}, state, { search: action.payload.GoodreadsResponse.search.results.work });
     case SEARCH_AUTHOR:

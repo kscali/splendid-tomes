@@ -33,8 +33,10 @@ const BookCard = (props) => {
   const classes = useStyles();
   const book = props.book;
 
+  const imageType = book.image_url._text ? book.image_url._text : book.image_url._cdata;
+
   const bookId = book.best_book ? book.best_book.id._text : book.id._text;
-  const bookImg = book.best_book ? book.best_book.image_url._text : book.image_url._text;
+  const bookImg = book.best_book ? book.best_book.image_url._text : imageType;
   const bookTitle = book.best_book ? book.best_book.title._text : book.title._text;
   const author = book.best_book ? book.best_book.author.name._text : book.authors.author.name._text;
   
