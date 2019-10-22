@@ -6,30 +6,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
-import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import { getBooks } from '../../actions/bookActions';
 import { useStyles } from './Navbar.css.js';
-import { Home, LocalLibrary, MenuBook, Favorite } from '@material-ui/icons';
-
-const icons = [
-  <Home />, 
-  <LocalLibrary />,
-  <MenuBook/>,
-  <Favorite />]
+import SideList from './SideList';
+import { menuId, mobileMenuId, RenderMenu, RenderMobileMenu } from './Menu';
 
 const Navbar = (props) => {
   
@@ -49,31 +34,6 @@ const Navbar = (props) => {
 
     setState({ ...state, [side]: open });
   };
-
-  const sideList = side => (
-    <div
-      className={classes.list}
-      role="presentation"
-      onClick={toggleDrawer(side, false)}
-      onKeyDown={toggleDrawer(side, false)}
-    >
-      <List>
-        {['Home', 'My Books', 'Recommendations', 'Favorites'].map((text, i) => (
-          <ListItem button key={text}>
-            <ListItemIcon className={ classes.icons }>{ icons[i] }</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-          <ListItem button>
-            <ListItemIcon className={ classes.icons }><AccountCircle /></ListItemIcon>
-            <ListItemText primary='Profile' />
-          </ListItem>
-      </List>
-    </div>
-  );
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -107,64 +67,6 @@ const Navbar = (props) => {
       props.history.push('/results');
     };
   };
-
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log Out</MenuItem>
-    </Menu>
-  );
-
-  const mobileMenuId = 'primary-search-account-menu-mobile';
-  
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton className={ classes.mail } aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
-  );
 
   return (
     <div className={classes.grow}>
@@ -207,16 +109,6 @@ const Navbar = (props) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"
@@ -246,10 +138,19 @@ const Navbar = (props) => {
         onClose={toggleDrawer('left', false)}
         onOpen={toggleDrawer('left', true)}
       >
-        {sideList('left')}
+        <SideList side='left' toggleDrawer={toggleDrawer} />
       </SwipeableDrawer>
-      {renderMobileMenu}
-      {renderMenu}
+      <RenderMenu 
+        anchorEl={anchorEl} 
+        isMenuOpen={isMenuOpen} 
+        handleMenuClose={handleMenuClose} 
+      />
+      <RenderMobileMenu 
+        mobileMoreAnchorEl={ mobileMoreAnchorEl } 
+        handleMobileMenuClose={ handleMobileMenuClose } 
+        isMobileMenuOpen={ isMobileMenuOpen } 
+        handleProfileMenuOpen={handleProfileMenuOpen} 
+      />
     </div>
   );
 }

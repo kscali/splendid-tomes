@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     width: 345,
     margin: '20px',
     "&:hover": {
-      transform: 'scale(1.5, 1.5)',
+      transform: 'scale(1.25, 1.25)',
       zIndex: 5,
       border: '1px solid #deded5'
       }
@@ -32,27 +32,33 @@ const useStyles = makeStyles({
 const BookCard = (props) => {
   const classes = useStyles();
   const book = props.book;
+
+  const bookId = book.best_book ? book.best_book.id._text : book.id._text;
+  const bookImg = book.best_book ? book.best_book.image_url._text : book.image_url._text;
+  const bookTitle = book.best_book ? book.best_book.title._text : book.title._text;
+  const author = book.best_book ? book.best_book.author.name._text : book.authors.author.name._text;
+  
   const goToBook = id => {
-    props.history.push(`/${id}`)
+    props.history.push(`/${id}`);
   }
   
   return (
     <Card className={classes.card}>
-      <CardActionArea onClick={() => goToBook(book.best_book.id._text)}>
+      <CardActionArea onClick={() => goToBook(bookId)}>
         <CardMedia
           className={classes.image}
           component="img"
           alt="Contemplative Reptile"
           height="140"
-          image={book.best_book.image_url._text}
+          image={ bookImg }
           title="Contemplative Reptile"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-           {book.best_book.title._text}
+           {bookTitle}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-          {book.best_book.author.name._text}
+          { author }
           </Typography>
         </CardContent>
       </CardActionArea>
@@ -60,7 +66,7 @@ const BookCard = (props) => {
         <Button size="small" color="primary">
           Share
         </Button>
-        <Button onClick={() => goToBook(book.best_book.id._text)} size="small" color="primary">
+        <Button onClick={() => goToBook(bookId)} size="small" color="primary">
           Learn More
         </Button>
       </CardActions>

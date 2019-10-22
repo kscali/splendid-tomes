@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBooksList, getAuthorBooks } from '../../reusable/selectors';
+import { Link } from 'react-router-dom';
+import {  getAuthorBooks, getSampleBookList, getBooksList } from '../../reusable/selectors';
 import { makeStyles } from '@material-ui/core/styles';
 import { getAuthor } from '../../actions/bookActions';
 import Card from '@material-ui/core/Card';
@@ -16,13 +17,16 @@ const Book = props  => {
 
   const [heart, setHeart] = useState(false);
 
-  const books = useSelector(getBooksList);
-  const mainBook = books.forEach(book => console.log(book.best_book.id._text === bookId));
-  console.log('this is main book', mainBook);
-  console.log('this is main books', books);
-  console.log('this is bookId', bookId);
+  const sampleBooks = useSelector(getSampleBookList);
+  const searchBooks = useSelector(getBooksList);
+ 
+  const sampleBook = sampleBooks.find(book => book.best_book.id._text === bookId);
+  const searchBook = searchBooks === undefined ? undefined : searchBooks.find(book => book.best_book.id._text === bookId);
+  const mainBook = searchBook === undefined ? sampleBook : searchBook;
+
   const authorId = mainBook.best_book.author.id._text;
-  const authorBooks = useSelector(getAuthorBooks)
+ 
+  const authorBooks = useSelector(getAuthorBooks);
   const bookDetails = authorBooks.find(book => book.id._text === bookId);
 
   const useStyles = makeStyles({
@@ -55,6 +59,10 @@ const Book = props  => {
     favorite: {
       display: 'flex',
       alignItems: 'center'
+    },
+    authorLink: {
+      color: 'black',
+      textDecoration: 'none'
     }
   });
 
@@ -65,6 +73,7 @@ const Book = props  => {
   },[dispatch, authorId]);
 
   if (!bookDetails) return null;
+  if (authorBooks.length === 0) return null;
 
   const favorite = heart ? <Favorite className={classes.vote_average} onClick={() => setHeart(false)} /> : <FavoriteBorder className={classes.vote_average} onClick={() => setHeart(true)}/>;
   
@@ -77,8 +86,14 @@ const Book = props  => {
             <img src={bookDetails.image_url._text} alt="book-cover" />
           </div>
           <div className="book-info">
-            <h4 className={ classes.bookTitle }>{bookDetails.authors.author.name._text.toUpperCase()}</h4>
-            <p className={ classes.bookTitle } >Release: { bookDetails.publication_year._text }</p>
+            <h4 className={ classes.bookTitle }>
+              <Link className={classes.authorLink} to={`/author/${authorId}`}>
+                {bookDetails.authors.author.name._text.toUpperCase()}
+              </Link>
+            </h4>
+            <p className={ classes.bookTitle } >
+              Release: { bookDetails.publication_year._text }
+            </p>
             <div className={classes.favorite}>
               <p>Add to library</p>
               {favorite}

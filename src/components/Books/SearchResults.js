@@ -6,6 +6,7 @@ import BookList from './BookList';
 const SearchResults = () => {
   const books = useSelector(getBooksList);
  
+  if (!books) return null;
   return (
     <div>
       <BookList books={books} />
