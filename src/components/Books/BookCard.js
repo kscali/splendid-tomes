@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Share from './Share';
 
 const useStyles = makeStyles({
   card: {
@@ -33,15 +34,15 @@ const BookCard = (props) => {
   const classes = useStyles();
   const book = props.book;
 
-  const imageType = book.image_url._text ? book.image_url._text : book.image_url._cdata;
-
   const bookId = book.best_book ? book.best_book.id._text : book.id._text;
-  const bookImg = book.best_book ? book.best_book.image_url._text : imageType;
-  const bookTitle = book.best_book ? book.best_book.title._text : book.title._text;
+  
+  const bookImg = book.best_book ? book.best_book.image_url._text : book.image_url._text ? book.image_url._text : book.image_url._cdata;
+  const bookTitle = book.best_book ? book.best_book.title._text : book.title._text ? book.title._text : book.title._cdata;
   const author = book.best_book ? book.best_book.author.name._text : book.authors.author.name._text;
   
   const goToBook = id => {
     props.history.push(`/${id}`);
+    window.scrollTo(0, 0);
   }
   
   return (
@@ -57,7 +58,7 @@ const BookCard = (props) => {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-           {bookTitle}
+           { bookTitle }
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
           { author }
@@ -65,9 +66,7 @@ const BookCard = (props) => {
         </CardContent>
       </CardActionArea>
       <CardActions className={classes.buttons}>
-        <Button size="small" color="primary">
-          Share
-        </Button>
+        <Share />
         <Button onClick={() => goToBook(bookId)} size="small" color="primary">
           Learn More
         </Button>

@@ -23,7 +23,7 @@ export const Author = () => {
       fontSize: 14,
     },
     bg: {
-      background: '#f7f7f0'
+      background: 'lightgray'
     },
     summary: {
       padding:'25px'

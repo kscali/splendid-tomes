@@ -33,7 +33,7 @@ const Book = props  => {
       fontSize: 14,
     },
     bg: {
-      background: '#f7f7f0'
+      background: 'lightgray'
     },
     summary: {
       padding:'25px'
@@ -83,7 +83,6 @@ const Book = props  => {
   const similarBooks = Array.isArray(bookDetails.similar_books.book) ? bookDetails.similar_books.book : [bookDetails.similar_books.book];
   const image = bookDetails.image_url._text ? bookDetails.image_url._text : bookDetails.image_url._data;
   
-  
   return (
     <div className={classes.bg}>
       { bookDetails ? (
@@ -120,7 +119,7 @@ const Book = props  => {
             <ReviewsModal book={bookDetails} />
           </div>
         </CardContent>
-        <Typography className={classes.summary} >
+        <Typography variant="h6" className={classes.summary} >
           { Parser(bookDetails.description._cdata) }
         </Typography>
       </Card>

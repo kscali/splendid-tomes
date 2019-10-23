@@ -41,20 +41,33 @@ const useStyles = makeStyles(theme => ({
     fontSize: '11px',
     textDecoration: 'none',
     fontFamily: '"Helvetica Neue", Helvetica, Arial, sans-serif'
+  },
+  noReviews: {
+    padding: '15px'
   }
 }));
 
 const getQuery = (query, isbn) => {
-  const str = "";
+  let index = query.indexOf("(");
 
-  query.split(" ").forEach(word => str+= `${word}+`);
+  let str = "";
+
+  if (index) {
+    query = query.slice(0, index - 1)
+  }
+
+  query = query.split(" ");
+  
+  for (let i = 0; i < query.length; i++) {
+    str += `${query[i]}+`
+  }
+
   return `${str}&isbn=${isbn}`
 }
 
 
 export default function ReviewsModal({ book }) {
   const [openModal, setOpen] = React.useState(false);
-
 
   const handleOpen = () => {
     setOpen(true);
@@ -64,8 +77,9 @@ export default function ReviewsModal({ book }) {
     setOpen(false);
   };
   const classes = useStyles();
-
-  // const queryString = getQuery(book.title._text, book.)
+  const title = book.title._text ? book.title._text : book.title._cdata;
+  const isbn = book.isbn._cdata ? book.isbn._cdata : book.isbn._text;
+  const queryString = getQuery(title, isbn);
 
   return (
     <div >
@@ -81,14 +95,21 @@ export default function ReviewsModal({ book }) {
        <div className={classes.goodreadsWidget} >
           <div>
             <h1 className={ classes.title }>
-              Goodreads reviews for { book.title._text }
+              Goodreads reviews for { title }
             </h1>
           </div>
           <div>
-            {/* <iframe title={book.title._text} className={classes.iframe} src={`https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&format=html&header_text=Goodreads+reviews+for+${queryString}&links=660&review_back=fff&stars=000&text=000`} width='100%' height="420" frameBorder="0"></iframe> */}
-          </div>
+            { isbn !== undefined ? (
+            <iframe 
+              title={title} 
+              className={classes.iframe} 
+              src={`https://www.goodreads.com/api/reviews_widget_iframe?did=DEVELOPER_ID&format=html&header_text=Goodreads+reviews+for+${queryString}&links=660&review_back=fff&stars=000&text=000`} 
+              width='100%' height="420" frameBorder="0">
+            </iframe>) 
+            : (<div className={ classes.noReviews } >Please read reviews for <a href={`https://www.goodreads.com/book/show/${book.id._text}.${book.title._text}?utm_medium=api&utm_source=reviews_widge`}>{`${title}`}</a> on GoodReads</div>)}
+            </div>
           <div className={ classes.grFooter }>
-            <a className={ classes.gr_branding } target="_blank" rel="nofollow noopener noreferrer" href="https://www.goodreads.com/book/show/2956.The_Adventures_of_Huckleberry_Finn?utm_medium=api&utm_source=reviews_widget">Reviews from Goodreads.com</a>
+            <a className={ classes.gr_branding } target="_blank" rel="nofollow noopener noreferrer" href={`https://www.goodreads.com/book/show/${book.id._text}.${book.title._text}?utm_medium=api&utm_source=reviews_widge`}>Reviews from Goodreads.com</a>
           </div>
         </div>
       </Modal>
