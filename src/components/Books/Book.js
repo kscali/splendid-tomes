@@ -80,8 +80,9 @@ const Book = props  => {
 
   const favorite = heart ? <Favorite className={classes.favoriteHeart} onClick={() => setHeart(false)} /> : <FavoriteBorder className={classes.favoriteHeart} onClick={() => setHeart(true)}/>;
   const title = bookDetails.title._text ? bookDetails.title._text : bookDetails.title._cdata;
-  const similarBooks = Array.isArray(bookDetails.similar_books.book) ? bookDetails.similar_books.book : [bookDetails.similar_books.book];
+  const similarBooks = !bookDetails.hasOwnProperty('similar_books') ? undefined : Array.isArray(bookDetails.similar_books.book) ? bookDetails.similar_books.book : [bookDetails.similar_books.book];
   const image = bookDetails.image_url._text ? bookDetails.image_url._text : bookDetails.image_url._data;
+  const summary = bookDetails.description._cdata ? bookDetails.description._cdata : bookDetails.description._text;
   
   return (
     <div className={classes.bg}>
@@ -120,13 +121,17 @@ const Book = props  => {
           </div>
         </CardContent>
         <Typography variant="h6" className={classes.summary} >
-          { Parser(bookDetails.description._cdata) }
+          { summary === undefined ? <div>No Summary</div> : Parser(summary) }
         </Typography>
       </Card>
         ) : ( <div>No Book Details Found</div>)
       }
-      <h3>Similar Books</h3>
-      <BookList books={ similarBooks } />
+      { similarBooks === undefined ? "" : 
+       (<>
+        <h3>Similar Books</h3>
+        <BookList books={ similarBooks } />
+        </>)
+      }
     </div>
   )
 }
