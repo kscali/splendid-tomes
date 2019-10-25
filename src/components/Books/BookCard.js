@@ -1,34 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
+import { Mui } from '../../reusable/MaterialUi';
 import Share from './Share';
-
-const useStyles = makeStyles({
-  card: {
-    width: 345,
-    margin: '20px',
-    "&:hover": {
-      transform: 'scale(1.25, 1.25)',
-      zIndex: 5,
-      border: '1px solid #deded5'
-      }
-  },
-  image: {
-    paddingTop: '20px',
-    objectFit: 'contain',
-    height: '200px'
-  },
-  buttons: {
-    justifyContent: 'center'
-  }
-});
+import { useStyles } from './BookCard.css.js';
 
 const BookCard = (props) => {
   const classes = useStyles();
@@ -46,9 +20,9 @@ const BookCard = (props) => {
   }
   
   return (
-    <Card className={classes.card}>
-      <CardActionArea onClick={() => goToBook(bookId)}>
-        <CardMedia
+    <Mui.Card className={classes.card}>
+      <Mui.CardActionArea onClick={() => goToBook(bookId)}>
+        <Mui.CardMedia
           className={classes.image}
           component="img"
           alt="Contemplative Reptile"
@@ -56,22 +30,22 @@ const BookCard = (props) => {
           image={ bookImg }
           title="Contemplative Reptile"
         />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+        <Mui.CardContent>
+          <Mui.Typography gutterBottom variant="h5" component="h2">
            { bookTitle }
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-          { author }
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions className={classes.buttons}>
+          </Mui.Typography>
+          <Mui.Typography variant="body2" color="textSecondary" component="p">
+            { author }
+          </Mui.Typography>
+        </Mui.CardContent>
+      </Mui.CardActionArea>
+      <Mui.CardActions className={classes.buttons}>
         <Share />
-        <Button onClick={() => goToBook(bookId)} size="small" color="primary">
+        <Mui.Button onClick={() => goToBook(bookId)} size="small" color="primary">
           Learn More
-        </Button>
-      </CardActions>
-    </Card>
+        </Mui.Button>
+      </Mui.CardActions>
+    </Mui.Card>
   );
 }
 

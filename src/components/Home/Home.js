@@ -22,7 +22,9 @@ const Home = () => {
       <div>
         <img src={booksImg} alt="books"/>
       </div>
-      <h2>Recommendations</h2>
+      <h2>
+        Recommendations
+      </h2>
       { books && books.length ? (
         <BookList books={books} />
       ) : (

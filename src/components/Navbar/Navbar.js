@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
+import { Mui } from '../../reusable/MaterialUi';
 import { getBooks } from '../../actions/bookActions';
 import { useStyles } from './Navbar.css.js';
 import SideList from './SideList';
@@ -70,18 +61,18 @@ const Navbar = (props) => {
 
   return (
     <div className={classes.grow}>
-      <AppBar className={classes.bar} position="static">
-        <Toolbar>
-          <IconButton
+      <Mui.AppBar className={classes.bar} position="static">
+        <Mui.Toolbar>
+          <Mui.IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
             onClick={() => setState({left: true})}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography className={classes.title} variant="h6" noWrap>
+            <Mui.MenuIcon />
+          </Mui.IconButton>
+          <Mui.Typography className={classes.title} variant="h6" noWrap>
             <Link to='/'>
               <span className={ classes.splendid }>
                 splendid
@@ -90,12 +81,12 @@ const Navbar = (props) => {
                 tomes
               </span>
             </Link>
-          </Typography>
+          </Mui.Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
-              <SearchIcon />
+              <Mui.SearchIcon />
             </div>
-            <InputBase
+            <Mui.InputBase
               value={input}
               onKeyDown={onEnter}
               onChange={handleChange}
@@ -109,7 +100,7 @@ const Navbar = (props) => {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton
+            <Mui.IconButton
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
@@ -117,29 +108,29 @@ const Navbar = (props) => {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
-            </IconButton>
+              <Mui.AccountCircle />
+            </Mui.IconButton>
           </div>
           <div className={classes.sectionMobile}>
-            <IconButton
+            <Mui.IconButton
               aria-label="show more"
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
               color="inherit"
             >
-              <MoreIcon />
-            </IconButton>
+              <Mui.MoreIcon />
+            </Mui.IconButton>
           </div>
-        </Toolbar>
-      </AppBar>
-      <SwipeableDrawer
+        </Mui.Toolbar>
+      </Mui.AppBar>
+      <Mui.SwipeableDrawer
         open={state.left}
         onClose={toggleDrawer('left', false)}
         onOpen={toggleDrawer('left', true)}
       >
         <SideList side='left' toggleDrawer={toggleDrawer} />
-      </SwipeableDrawer>
+      </Mui.SwipeableDrawer>
       <RenderMenu 
         anchorEl={anchorEl} 
         isMenuOpen={isMenuOpen} 

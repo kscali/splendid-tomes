@@ -1,10 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import {  getAuthorBooks, getAuthorDetails } from '../../reusable/selectors';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import { useStyles } from './Author.css.js';
+import { Mui } from '../../reusable/MaterialUi';
 import BookList from '../Books/BookList';
 import Parser from 'html-react-parser';
 
@@ -12,44 +10,6 @@ export const Author = () => {
 
   const authorBooks = useSelector(getAuthorBooks);
   const author = useSelector(getAuthorDetails);
-
-  const useStyles = makeStyles({
-    card: {
-      maxWidth: '800px',
-      margin: '0 auto',
-      paddingTop: '25px'
-    },
-    title: {
-      fontSize: 14,
-    },
-    bg: {
-      background: 'lightgray'
-    },
-    summary: {
-      padding:'25px'
-    },
-    bookTitle: {
-     marginTop: 0,
-     marginBottom: '10px'
-    },
-    ratings: {
-      display: 'flex',
-      alignItems: 'center'
-
-    },
-    vote_average: {
-      paddingLeft: '5px'
-    },
-    authorInfo: {
-      display: 'flex',
-      justifyContent: 'center'
-    },
-    authorLink: {
-      color: 'black',
-      textDecoration: 'none'
-    }
-  });
-
   const classes = useStyles();
 
   if (!author) return null;
@@ -57,7 +17,7 @@ export const Author = () => {
 
   return (
     <div className={classes.bg}>
-      <Card className={classes.card}>
+      <Mui.Card className={classes.card}>
         <h1>{author.name._text.toUpperCase()}</h1>
           <div className={ classes.authorInfo }>
             { author.hometown._text ? (
@@ -67,15 +27,15 @@ export const Author = () => {
               ) : " "
             }
           </div>
-        <CardContent className="book-details">
+        <Mui.CardContent className="book-details">
           <div className="book-cover">
             <img src={author.large_image_url._cdata} alt="book-cover" />
           </div>
-        </CardContent>
-        <Typography className={classes.summary} >
+        </Mui.CardContent>
+        <Mui.Typography className={classes.summary} >
           { Parser(author.about._cdata) }
-        </Typography>
-      </Card>
+        </Mui.Typography>
+      </Mui.Card>
       <h3 className={ classes.authorInfo }>
         More From This Author
       </h3>
