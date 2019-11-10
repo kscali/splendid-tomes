@@ -1,17 +1,17 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-import {  getAuthorBooks, getAuthorDetails } from '../../reusable/selectors';
-import { useStyles } from './Author.css.js';
-import { Mui } from '../../reusable/MaterialUi';
 import BookList from '../Books/BookList';
 import Parser from 'html-react-parser';
+import { Mui } from '../../reusable/MaterialUi';
+import { useStyles } from './Author.css.js';
+import { useSelector } from 'react-redux';
+import { getAuthorBooks, getAuthorDetails } from '../../reusable/selectors';
 
 export const Author = () => {
 
-  const authorBooks = useSelector(getAuthorBooks);
-  const author = useSelector(getAuthorDetails);
   const classes = useStyles();
-
+  const author = useSelector(getAuthorDetails);
+  const authorBooks = useSelector(getAuthorBooks);
+ 
   if (!author) return null;
   if (!authorBooks) return null;
 
@@ -27,13 +27,13 @@ export const Author = () => {
               ) : " "
             }
           </div>
-        <Mui.CardContent className="book-details">
-          <div className="book-cover">
-            <img src={author.large_image_url._cdata} alt="book-cover" />
+        <Mui.CardContent className={classes.authDetails}>
+          <div className={classes.authCover}>
+            <img src={author.large_image_url._cdata} alt="author-cover" />
           </div>
         </Mui.CardContent>
         <Mui.Typography className={classes.summary} >
-          { Parser(author.about._cdata) }
+          { author.about.hasOwnProperty('_cdata') ? Parser(author.about._cdata) : "This author has no summary" }
         </Mui.Typography>
       </Mui.Card>
       <h3 className={ classes.authorInfo }>

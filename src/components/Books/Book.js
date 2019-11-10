@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { getMainBook } from '../../reusable/selectors';
 import { getAuthor, getBook } from '../../actions/bookActions';
+import { getMainBook } from '../../reusable/selectors';
+import { useStyles } from './Book.css.js';
+import { Link } from 'react-router-dom';
 import { Mui } from '../../reusable/MaterialUi';
-import Parser from 'html-react-parser';
 import ReviewsModal from '../Modal/Modal';
 import BookList from '../Books/BookList';
-import { useStyles } from './Book.css.js';
+import Parser from 'html-react-parser';
 
 const getAuthorInfo = auth => {
   if (Array.isArray(auth)) {
@@ -17,22 +17,22 @@ const getAuthorInfo = auth => {
     }
   } else {
     return {
-      id: auth.id._tex,
+      id: auth.id._text,
       name: auth.name._text
     }
   }
 }
 
 const Book = props  => {
+  
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const bookId = props.match.params.id;
+  const [heart, setHeart] = useState(false)
   const bookDetails = useSelector(getMainBook);
   const author = getAuthorInfo(bookDetails.authors.author);
-  const dispatch = useDispatch();
+ 
 
-  const [heart, setHeart] = useState(false)
-
-  const classes = useStyles();
-  
   useEffect(() => {
     dispatch(getAuthor(author.id));
     dispatch(getBook(bookId));
@@ -55,11 +55,11 @@ const Book = props  => {
         </h1>
         <Mui.CardContent className={ classes.bookDetails }>
           <div className={ classes.bookCover }>
-            <img src={ image } alt="book-cover" />
+            <img className={classes.bookPic} src={ image } alt="book-cover" />
           </div>
           <div className={ classes.bookInfo }>
             <h4 className={ classes.bookTitle }>
-              <Link className={ classes.authorLink } to={`/author/${author.id}`}>
+              <Link className={ classes.authorLink } to={`/author/${author.id}`}> 
                 { author.name.toUpperCase() }
               </Link>
             </h4>
@@ -86,13 +86,18 @@ const Book = props  => {
           { summary === undefined ? <div>No Summary</div> : Parser(summary) }
         </Mui.Typography>
       </Mui.Card>
-        ) : ( <div>No Book Details Found</div>)
+        ) : ( 
+          <div>No Book Details Found</div>
+        )
       }
-      { similarBooks === undefined ? "" : 
-       (<>
-        <h3>Similar Books</h3>
-        <BookList books={ similarBooks } />
-        </>)
+      { 
+        similarBooks === undefined ? "" : 
+       (
+          <>
+            <h3>Similar Books</h3>
+            <BookList books={ similarBooks } />
+          </>
+        )
       }
     </div>
   )

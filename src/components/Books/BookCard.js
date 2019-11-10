@@ -31,7 +31,7 @@ const BookCard = (props) => {
           title="Contemplative Reptile"
         />
         <Mui.CardContent>
-          <Mui.Typography gutterBottom variant="h5" component="h2">
+          <Mui.Typography gutterBottom component="h3">
            { bookTitle }
           </Mui.Typography>
           <Mui.Typography variant="body2" color="textSecondary" component="p">

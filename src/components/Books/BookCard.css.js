@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles({
   card: {
-    width: 345,
+    width: 275,
     margin: '20px',
     "&:hover": {
       transform: 'scale(1.25, 1.25)',
@@ -13,7 +13,7 @@ export const useStyles = makeStyles({
   image: {
     paddingTop: '20px',
     objectFit: 'contain',
-    height: '200px'
+    height: '150px'
   },
   buttons: {
     justifyContent: 'center'

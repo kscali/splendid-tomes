@@ -56,6 +56,9 @@ export const useStyles = makeStyles({
   bookDetails: {
     display: 'flex',
     justifyContent: 'center'
+  },
+  bookPic: {
+    width: 120
   }
  });
 

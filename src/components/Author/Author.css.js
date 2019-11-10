@@ -34,5 +34,13 @@ export const useStyles = makeStyles({
   authorLink: {
     color: 'black',
     textDecoration: 'none'
+  },
+  authCover: {
+    width: '350px',
+    margin: '0 auto'
+  },
+  authDetails: {
+    display: 'flex',
+    justifyContent: 'center'
   }
 });

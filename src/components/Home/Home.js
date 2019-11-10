@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'; 
-import * as booksImg from '../../images/books2.jpg';
+import * as booksImg from '../../images/all-books.jpg';
 import { getSampleBookList } from '../../reusable/selectors';
 import { getSampleBooks } from '../../actions/bookActions';
 import './Home.css';
